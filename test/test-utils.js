@@ -1,21 +1,5 @@
 import assert from 'assert';
-import { JSDOM } from 'jsdom';
-
 import { Simulate } from 'react-dom/test-utils';
-
-// export function getBrowserEnvironment(html = '') {
-//   const { window } = new JSDOM(html || `<!DOCTYPE html>
-//   <html>
-//     <head>
-//       <meta charset="UTF-8">
-//       <title>Tic-Tac-Toe</title>
-//     </head>
-//     <body></body>
-//   </html>`);
-//   const { document } = window;
-
-//   return { document, window };
-// }
 
 export function sel(container, testId) {
   const element = find(container, testId);

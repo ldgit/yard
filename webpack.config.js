@@ -5,33 +5,33 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    app: './examples/index.js',
+    app: './examples/index.jsx',
   },
   devtool: 'inline-source-map',
+  resolve: { extensions: ['.js', '.jsx'] },
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'Development'
+      title: 'Development',
     }),
   ],
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
-      { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "babel-loader" },
+      { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: 'babel-loader' },
       {
         test: /\.css$/,
         use: [
           'style-loader',
-          'css-loader'
+          'css-loader',
         ],
-      }
-    ]
+      },
+    ],
   },
   devServer: {
     contentBase: './dist',
   },
 };
-

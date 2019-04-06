@@ -25,33 +25,34 @@ describe('Datepicker component', () => {
   });
 
   it('should render an input field', () => {
-    ReactDOM.render(<Datepicker onDateChange={() => { }} />, container);
+    ReactDOM.render(<Datepicker onDateChange={() => {}} />, container);
     const inputs = container.querySelectorAll('input[type="text"]');
     expect(inputs.length).toBe(1);
   });
 
-  it('clicking on the input should allow the user to select a date', () => {
-    return new Promise((resolve) => {
+  it(
+    'clicking on the input should allow the user to select a date',
+    () => new Promise((resolve) => {
       ReactDOM.render(<Datepicker onDateChange={resolve} />, container);
       const input = sel(container, 'dateInput');
       click(input);
       wait(0).then(() => click(sel(document.body, currentDate)));
     }).then(() => {
       expect(sel(container, 'dateInput').value).toBe(currentDate);
-    });
-  });
+    }),
+  );
 
-  it('selected date should be sent to onDateChange prop as argument', () => {
-    return new Promise((resolve) => {
+  it(
+    'selected date should be sent to onDateChange prop as argument',
+    () => new Promise((resolve) => {
       ReactDOM.render(<Datepicker onDateChange={resolve} />, container);
       const input = sel(container, 'dateInput');
       click(input);
       wait(0).then(() => click(sel(document.body, currentDate)));
     }).then((selectedDate) => {
       expect(formatDate(selectedDate)).toBe(currentDate);
-    });
-  });
-
+    }),
+  );
 });
 
 function formatDate(date) {
