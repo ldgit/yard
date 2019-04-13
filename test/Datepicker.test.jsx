@@ -53,6 +53,23 @@ describe('Datepicker component', () => {
       expect(formatDate(selectedDate)).toBe(currentDate);
     }),
   );
+
+  it(
+    'should allow setting date through "value" prop',
+    () => new Promise((resolve) => {
+      ReactDOM.render(<Datepicker value={new Date(2019, 0, 1)} />, container);
+      return wait(0).then(resolve);
+    }).then(() => {
+      const input = sel(container, 'dateInput');
+      expect(input.value).toEqual('2019-01-01');
+    }),
+  );
+
+  it('should start with empty input if no date given in "value" prop', () => {
+    ReactDOM.render(<Datepicker value={new Date(2019, 0, 1)} />, container);
+    const input = sel(container, 'dateInput');
+    expect(input.value).toEqual('');
+  });
 });
 
 function formatDate(date) {

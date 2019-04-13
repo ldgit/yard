@@ -3,11 +3,12 @@ import flatpickr from 'flatpickr';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import format from 'date-fns/format';
 
-export default function Datepicker({ onDateChange }) {
+export default function Datepicker({ value = null, onDateChange }) {
   const inputEl = useRef(null);
 
   useEffect(() => {
     const flatpickrInstance = flatpickr(inputEl.current, {
+      defaultDate: value,
       onDayCreate(dObj, dStr, fp, dayElem) {
         if (process.env.NODE_ENV !== 'production') {
           dayElem.setAttribute('data-testid', format(dayElem.dateObj, 'YYYY-MM-DD'));
