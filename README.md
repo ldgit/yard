@@ -8,3 +8,4 @@ Guidelines:
 * encapsulated internal datepicker (can be replaced without affecting client code)
 * must use React hooks API
 * unit tested
+* must work in IE9 or specify necessary polyfills
