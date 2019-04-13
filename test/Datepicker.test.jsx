@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import format from 'date-fns/format';
 import Datepicker from '../src/Datepicker';
-import { clickOnElement, sel } from './test-utils';
+import { clickOnElement, sel, find } from './test-utils';
 
 const wait = miliseconds => new Promise(resolve => setTimeout(resolve, miliseconds));
 
@@ -54,6 +54,17 @@ describe('Datepicker component', () => {
       renderDatepicker({ value: new Date(2019, 0, 1) });
       return wait(0).then(resolve);
     }).then(() => expect(dateInput().value).toEqual('2019-01-01')),
+  );
+
+  it(
+    'should open datepicker to the same month as given in value argument',
+    () => new Promise((resolve) => {
+      renderDatepicker({ value: new Date(2018, 2, 8) });
+      click(dateInput());
+      return wait(0).then(() => {
+        resolve(find(document.body, formatDate(new Date(2018, 2, 8))));
+      });
+    }).then(datepickerDateCell => expect(datepickerDateCell).not.toEqual(null)),
   );
 
   it('should start with empty input if no date given in "value" prop', () => {
