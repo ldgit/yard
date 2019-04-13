@@ -25,7 +25,7 @@ describe('Datepicker component', () => {
   });
 
   it('should render an input field', () => {
-    ReactDOM.render(<Datepicker onDateChange={() => {}} />, container);
+    renderDatepicker({});
     const inputs = container.querySelectorAll('input[type="text"]');
     expect(inputs.length).toBe(1);
   });
@@ -33,43 +33,41 @@ describe('Datepicker component', () => {
   it(
     'clicking on the input should allow the user to select a date',
     () => new Promise((resolve) => {
-      ReactDOM.render(<Datepicker onDateChange={resolve} />, container);
-      const input = sel(container, 'dateInput');
-      click(input);
+      renderDatepicker({ onDateChange: resolve });
+      click(dateInput());
       wait(0).then(() => click(sel(document.body, currentDate)));
-    }).then(() => {
-      expect(sel(container, 'dateInput').value).toBe(currentDate);
-    }),
+    }).then(() => expect(dateInput().value).toBe(currentDate)),
   );
 
   it(
     'selected date should be sent to onDateChange prop as argument',
     () => new Promise((resolve) => {
-      ReactDOM.render(<Datepicker onDateChange={resolve} />, container);
-      const input = sel(container, 'dateInput');
-      click(input);
+      renderDatepicker({ onDateChange: resolve });
+      click(dateInput());
       wait(0).then(() => click(sel(document.body, currentDate)));
-    }).then((selectedDate) => {
-      expect(formatDate(selectedDate)).toBe(currentDate);
-    }),
+    }).then(selectedDate => expect(formatDate(selectedDate)).toBe(currentDate)),
   );
 
   it(
     'should allow setting date through "value" prop',
     () => new Promise((resolve) => {
-      ReactDOM.render(<Datepicker value={new Date(2019, 0, 1)} />, container);
+      renderDatepicker({ value: new Date(2019, 0, 1) });
       return wait(0).then(resolve);
-    }).then(() => {
-      const input = sel(container, 'dateInput');
-      expect(input.value).toEqual('2019-01-01');
-    }),
+    }).then(() => expect(dateInput().value).toEqual('2019-01-01')),
   );
 
   it('should start with empty input if no date given in "value" prop', () => {
-    ReactDOM.render(<Datepicker value={new Date(2019, 0, 1)} />, container);
-    const input = sel(container, 'dateInput');
-    expect(input.value).toEqual('');
+    renderDatepicker({});
+    expect(dateInput().value).toEqual('');
   });
+
+  function renderDatepicker({ value, onDateChange }) {
+    ReactDOM.render(<Datepicker value={value} onDateChange={onDateChange} />, container);
+  }
+
+  function dateInput() {
+    return sel(container, 'dateInput');
+  }
 });
 
 function formatDate(date) {
