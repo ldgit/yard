@@ -3,7 +3,7 @@ import flatpickr from 'flatpickr';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import format from 'date-fns/format';
 
-export default function Datepicker({ value = null, onDateChange }) {
+export default function Datepicker({ value = null, onDateChange = () => {} }) {
   const inputEl = useRef(null);
 
   useEffect(() => {

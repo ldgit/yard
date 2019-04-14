@@ -20,15 +20,24 @@ describe('Datepicker component', () => {
     document.body.appendChild(container);
   });
 
-  afterEach(() => {
-    ReactDOM.unmountComponentAtNode(container);
-  });
+  afterEach(() => ReactDOM.unmountComponentAtNode(container));
 
   it('should render an input field', () => {
     renderDatepicker({});
     const inputs = container.querySelectorAll('input[type="text"]');
     expect(inputs.length).toBe(1);
   });
+
+  it(
+    'should use empty function if onDateChange handler not provided',
+    () => new Promise((resolve) => {
+      renderDatepicker({});
+      click(dateInput());
+      return wait(0)
+        .then(() => click(sel(document.body, currentDate)))
+        .then(resolve);
+    }),
+  );
 
   it(
     'clicking on the input should allow the user to select a date',
@@ -70,6 +79,17 @@ describe('Datepicker component', () => {
   it('should start with empty input if no date given in "value" prop', () => {
     renderDatepicker({});
     expect(dateInput().value).toEqual('');
+  });
+
+  it('should cleanup after itself', () => {
+    document.body.innerHTML = '';
+    container = document.createElement('div');
+    document.body.appendChild(container);
+    renderDatepicker({});
+
+    ReactDOM.unmountComponentAtNode(container);
+
+    expect(document.body.innerHTML).toBe('<div></div>');
   });
 
   function renderDatepicker({ value, onDateChange }) {
