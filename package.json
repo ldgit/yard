@@ -8,7 +8,7 @@
     "build": "webpack",
     "start": "webpack-dev-server --open",
     "watch": "jest --watchAll",
-    "lint": "eslint ./"
+    "lint": "eslint --ext .jsx,.js ./"
   },
   "keywords": [
     "datepicker"
