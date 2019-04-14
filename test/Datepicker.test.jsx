@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import format from 'date-fns/format';
 import Datepicker from '../src/Datepicker';
@@ -95,6 +95,51 @@ describe('Datepicker component', () => {
   it.skip('should support different locales', () => {});
 
   it.skip('multiple components should work independently at the same time', () => {});
+
+  describe('React specific behaviour', () => {
+    it('should rerender component if value prop changes', () => {
+      function Parent() {
+        const [date, setDate] = useState(new Date());
+
+        return (
+          <>
+            <button type="button" onClick={() => setDate(new Date(2018, 7, 13))} data-testid="changeDate" />
+            <Datepicker value={date} />
+          </>
+        );
+      }
+      ReactDOM.render(<Parent />, container);
+
+      return new Promise((resolve) => {
+        click(sel(container, 'changeDate'));
+        return wait(0).then(resolve);
+      }).then(() => expect(dateInput().value).toEqual('2018-08-13'));
+    });
+
+    it(
+      'should rerender component if onDateChange prop changes',
+      () => new Promise((resolve) => {
+        function Parent() {
+          const [value, setValue] = useState('x');
+
+          return (
+            <>
+              <button type="button" onClick={() => setValue('y')} data-testid="changeDate" />
+              <Datepicker onDateChange={() => resolve(value)} />
+            </>
+          );
+        }
+        ReactDOM.render(<Parent />, container);
+
+        // We trigger the Parent value change, and this changes onDateChange callback
+        click(sel(container, 'changeDate'));
+        click(dateInput());
+
+        return wait(0).then(() => click(sel(document.body, currentDate)));
+        // Must be y if onDateChange is correctly specified as useEffect dependency
+      }).then(value => expect(value).toEqual('y')),
+    );
+  });
 
   function renderDatepicker({ value, onDateChange }) {
     ReactDOM.render(<Datepicker value={value} onDateChange={onDateChange} />, container);

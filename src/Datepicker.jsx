@@ -20,7 +20,7 @@ export default function Datepicker({ value = null, onDateChange = () => {} }) {
     });
 
     return () => flatpickrInstance.destroy();
-  }, []); // Run only on first render
+  }, [value, onDateChange]); // Run only on first render
 
   return (
     <>
