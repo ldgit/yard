@@ -1,4 +1,4 @@
-# A React datepicker experiment
+# React datepicker experiment
 
 Just an experiment to see how easy it is to integrate a not-reactive library with React.
 
