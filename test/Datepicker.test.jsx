@@ -92,6 +92,10 @@ describe('Datepicker component', () => {
     expect(document.body.innerHTML).toBe('<div></div>');
   });
 
+  it.skip('should support different locales', () => {});
+
+  it.skip('multiple components should work independently at the same time', () => {});
+
   function renderDatepicker({ value, onDateChange }) {
     ReactDOM.render(<Datepicker value={value} onDateChange={onDateChange} />, container);
   }
