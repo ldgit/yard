@@ -11,7 +11,10 @@ export default function Datepicker({ value = null, onDateChange = () => {} }) {
       defaultDate: value,
       onDayCreate(dObj, dStr, fp, dayElem) {
         if (process.env.NODE_ENV !== 'production') {
-          dayElem.setAttribute('data-testid', format(dayElem.dateObj, 'YYYY-MM-DD'));
+          dayElem.setAttribute(
+            'data-testid',
+            format(dayElem.dateObj, 'YYYY-MM-DD'),
+          );
         }
       },
       onChange(selectedDates) {
