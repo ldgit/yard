@@ -8,7 +8,7 @@
     "build": "webpack",
     "start": "webpack-dev-server --open",
     "watch": "jest --watchAll",
-    "prettier": "prettier \"{*.{js,css,json,md},{src,test}/**/*.{js,css,json,md}}\" --check",
+    "prettier": "prettier \"{*.{js,jsx,css,json,md},{src,test}/**/*.{js,jsx,css,json,md}}\" --check",
     "lint": "eslint --ext .jsx,.js ./",
     "test:all": "npm run prettier && npm run lint && npm t"
   },
@@ -74,7 +74,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,json,md}": [
+    "*.{js,css,json,md,jsx}": [
       "prettier --write",
       "git add"
     ],
