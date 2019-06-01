@@ -31,12 +31,17 @@ function dispatchMouseEvent(type, window, element) {
 }
 
 export function triggerChange(element) {
-  assert.ok(element, 'Element that the change event should be triggered on does not exist');
+  assert.ok(
+    element,
+    'Element that the change event should be triggered on does not exist',
+  );
   Simulate.change(element);
 }
 
 export function selectByText(container, selector, text) {
-  const elements = Array.from(container.querySelectorAll(selector)).filter(element => element.textContent === text);
+  const elements = Array.from(container.querySelectorAll(selector)).filter(
+    element => element.textContent === text,
+  );
 
   return elements.length > 0 ? elements[0] : null;
 }

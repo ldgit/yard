@@ -8,8 +8,9 @@
     "build": "webpack",
     "start": "webpack-dev-server --open",
     "watch": "jest --watchAll",
+    "prettier": "prettier \"{*.{js,css,json,md},{src,test}/**/*.{js,css,json,md}}\" --check",
     "lint": "eslint --ext .jsx,.js ./",
-    "test:all": "npm run lint && npm t"
+    "test:all": "npm run prettier && npm run lint && npm t"
   },
   "keywords": [
     "datepicker"
@@ -36,6 +37,7 @@
     "eslint-plugin-react-hooks": "^1.6.0",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.1.0",
+    "prettier": "1.17.1",
     "style-loader": "^0.23.1",
     "webpack": "^4.29.5",
     "webpack-cli": "^3.2.3",
@@ -45,5 +47,22 @@
     "flatpickr": "^4.5.4",
     "react": "^16.8.2",
     "react-dom": "^16.8.2"
+  },
+  "prettier": {
+    "arrowParens": "avoid",
+    "bracketSpacing": true,
+    "htmlWhitespaceSensitivity": "css",
+    "insertPragma": false,
+    "jsxBracketSameLine": false,
+    "jsxSingleQuote": false,
+    "printWidth": 80,
+    "proseWrap": "preserve",
+    "quoteProps": "as-needed",
+    "requirePragma": false,
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "all",
+    "useTabs": false
   }
 }
