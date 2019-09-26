@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
 import format from 'date-fns/format';
 import Datepicker from '../src/Datepicker';
 import { clickOnElement, sel, find } from './test-utils';
@@ -29,47 +30,44 @@ describe('Datepicker component', () => {
     expect(inputs.length).toBe(1);
   });
 
-  it('should use empty function if onDateChange handler not provided', () =>
-    new Promise(resolve => {
-      renderDatepicker({});
-      click(dateInput());
-      return wait(0)
-        .then(() => click(sel(document.body, currentDate)))
-        .then(resolve);
-    }));
+  it('should use empty function if onDateChange handler not provided', () => {
+    renderDatepicker({});
+    click(dateInput());
+    click(sel(document.body, currentDate));
+
+    return wait(0);
+  });
 
   it('clicking on the input should allow the user to select a date', () =>
     new Promise(resolve => {
       renderDatepicker({ onDateChange: resolve });
       click(dateInput());
-      wait(0).then(() => click(sel(document.body, currentDate)));
+      click(sel(document.body, currentDate));
     }).then(() => expect(dateInput().value).toBe(currentDate)));
 
   it('selected date should be sent to onDateChange prop as argument', () =>
     new Promise(resolve => {
       renderDatepicker({ onDateChange: resolve });
       click(dateInput());
-      wait(0).then(() => click(sel(document.body, currentDate)));
+      click(sel(document.body, currentDate));
     }).then(selectedDate =>
       expect(formatDate(selectedDate)).toBe(currentDate),
     ));
 
-  it('should allow setting date through "value" prop', () =>
-    new Promise(resolve => {
-      renderDatepicker({ value: new Date(2019, 0, 1) });
-      return wait(0).then(resolve);
-    }).then(() => expect(dateInput().value).toEqual('2019-01-01')));
+  it('should allow setting date through "value" prop', () => {
+    renderDatepicker({ value: new Date(2019, 2, 21) });
+    expect(dateInput().value).toEqual('2019-03-21');
+  });
 
-  it('should open datepicker to the same month as given in value argument', () =>
-    new Promise(resolve => {
-      renderDatepicker({ value: new Date(2018, 2, 8) });
-      click(dateInput());
-      return wait(0).then(() => {
-        resolve(find(document.body, formatDate(new Date(2018, 2, 8))));
-      });
-    }).then(datepickerDateCell =>
-      expect(datepickerDateCell).not.toEqual(null),
-    ));
+  it('should open datepicker to the same month as given in value argument', () => {
+    renderDatepicker({ value: new Date(2018, 2, 8) });
+    click(dateInput());
+    const datepickerDateCell = find(
+      document.body,
+      formatDate(new Date(2018, 2, 8)),
+    );
+    expect(datepickerDateCell).not.toEqual(null);
+  });
 
   it('should start with empty input if no date given in "value" prop', () => {
     renderDatepicker({});
@@ -82,7 +80,9 @@ describe('Datepicker component', () => {
     document.body.appendChild(container);
     renderDatepicker({});
 
-    ReactDOM.unmountComponentAtNode(container);
+    act(() => {
+      ReactDOM.unmountComponentAtNode(container);
+    });
 
     expect(document.body.innerHTML).toBe('<div></div>');
   });
@@ -98,6 +98,7 @@ describe('Datepicker component', () => {
 
         return (
           <>
+            {/* Will change prop value of datepicker through this button */}
             <button
               type="button"
               onClick={() => setDate(new Date(2018, 7, 13))}
@@ -109,12 +110,13 @@ describe('Datepicker component', () => {
           </>
         );
       }
-      ReactDOM.render(<Parent />, container);
+      act(() => {
+        ReactDOM.render(<Parent />, container);
+      });
 
-      return new Promise(resolve => {
-        click(sel(container, 'changeDate'));
-        return wait(0).then(resolve);
-      }).then(() => expect(dateInput().value).toEqual('2018-08-13'));
+      click(sel(container, 'changeDate'));
+
+      expect(dateInput().value).toEqual('2018-08-13');
     });
 
     it('should rerender component if onDateChange prop changes', () =>
@@ -135,22 +137,27 @@ describe('Datepicker component', () => {
             </>
           );
         }
-        ReactDOM.render(<Parent />, container);
+        act(() => {
+          ReactDOM.render(<Parent />, container);
+        });
 
-        // We trigger the Parent value change, and this changes onDateChange callback
+        // We trigger the Parent value change, and this changes onDateChange
+        // callback because it now resolves with new value
         click(sel(container, 'changeDate'));
         click(dateInput());
 
-        return wait(0).then(() => click(sel(document.body, currentDate)));
+        click(sel(document.body, currentDate));
         // Must be y if onDateChange is correctly specified as useEffect dependency
       }).then(value => expect(value).toEqual('y')));
   });
 
   function renderDatepicker({ value, onDateChange }) {
-    ReactDOM.render(
-      <Datepicker value={value} onDateChange={onDateChange} />,
-      container,
-    );
+    act(() => {
+      ReactDOM.render(
+        <Datepicker value={value} onDateChange={onDateChange} />,
+        container,
+      );
+    });
   }
 
   function dateInput() {
