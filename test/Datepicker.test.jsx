@@ -102,7 +102,9 @@ describe('Datepicker component', () => {
               type="button"
               onClick={() => setDate(new Date(2018, 7, 13))}
               data-testid="changeDate"
-            />
+            >
+              A button
+            </button>
             <Datepicker value={date} />
           </>
         );
@@ -126,7 +128,9 @@ describe('Datepicker component', () => {
                 type="button"
                 onClick={() => setValue('y')}
                 data-testid="changeDate"
-              />
+              >
+                A button
+              </button>
               <Datepicker onDateChange={() => resolve(value)} />
             </>
           );
@@ -155,5 +159,5 @@ describe('Datepicker component', () => {
 });
 
 function formatDate(date) {
-  return format(date, 'YYYY-MM-DD');
+  return format(date, 'yyyy-MM-dd');
 }

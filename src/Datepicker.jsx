@@ -13,7 +13,7 @@ export default function Datepicker({ value = null, onDateChange = () => {} }) {
         if (process.env.NODE_ENV !== 'production') {
           dayElem.setAttribute(
             'data-testid',
-            format(dayElem.dateObj, 'YYYY-MM-DD'),
+            format(dayElem.dateObj, 'yyyy-MM-dd'),
           );
         }
       },
